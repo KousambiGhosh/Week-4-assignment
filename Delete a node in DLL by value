@@ -1,0 +1,71 @@
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.prev = None
+        self.next = None
+
+class DoublyLinkedList:
+    def __init__(self):
+        self.head = None
+
+    def insert_at_beginning(self, data):
+        new_node = Node(data)
+        new_node.next = self.head
+        if self.head:
+            self.head.prev = new_node
+        self.head = new_node
+
+    def delete_node(self, key):
+        current = self.head
+        
+        # If list is empty
+        if not current:
+            return
+        
+        # Find the node with the data = key
+        while current and current.data != key:
+            current = current.next
+        
+        # If node not found
+        if not current:
+            print(f"Node with data {key} not found.")
+            return
+        
+        # If node to delete is head
+        if current == self.head:
+            self.head = current.next
+            if self.head:
+                self.head.prev = None
+        
+        else:
+            # Change prev node's next
+            if current.prev:
+                current.prev.next = current.next
+            
+            # Change next node's prev
+            if current.next:
+                current.next.prev = current.prev
+        
+        del current  # free the node memory (optional in Python)
+
+    def print_list(self):
+        current = self.head
+        print("Doubly Linked List:", end=" ")
+        while current:
+            print(current.data, end=" <-> " if current.next else "")
+            current = current.next
+        print()
+
+# Example usage:
+dll = DoublyLinkedList()
+dll.insert_at_beginning(10)
+dll.insert_at_beginning(20)
+dll.insert_at_beginning(30)
+
+print("Before deletion:")
+dll.print_list()
+
+dll.delete_node(20)
+
+print("After deletion of 20:")
+dll.print_list()
